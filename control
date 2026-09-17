@@ -1,0 +1,12 @@
+Package: com.sa1nt.audiocurve
+Name: AudioCurve
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: System wide 3 band equalizer with an AirPods style Custom EQ screen. Filters the mixed output inside mediaserverd, so Music, Spotify, YouTube, Safari and games are all affected.
+Depends: ellekit (>= 1.0.0) | mobilesubstrate, firmware (>= 15.0)
+Maintainer: Sa1nt
+Author: Sa1nt
+Section: Tweaks
+Icon: https://raw.githubusercontent.com/G-P-T4EVER/AudioCurve/main/icon.png
+Depiction: https://github.com/G-P-T4EVER/AudioCurve
+Tag: purpose::uikittool
