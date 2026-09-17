@@ -1,0 +1,44 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dsptest:
+    name: DSP tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run host-side DSP tests
+        run: |
+          cc -O2 -I. -o /tmp/ac_test_dsp tests/test_dsp.c eq_dsp.c ac_meter.c -lm
+          /tmp/ac_test_dsp
+
+  package:
+    name: Package (${{ matrix.scheme }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - scheme: rootless
+            make_args: ""
+          - scheme: rootful
+            make_args: "THEOS_PACKAGE_SCHEME="
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Theos
+        uses: Randomblock1/theos-action@v1
+
+      - name: Build .deb
+        run: make package FINALPACKAGE=1 ${{ matrix.make_args }}
+
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: AudioCurve-${{ matrix.scheme }}
+          path: packages/*.deb
+          if-no-files-found: error
